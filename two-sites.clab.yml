@@ -1,0 +1,49 @@
+# Two-site lab: Site A (R1, R2, PC-A) and Site B (R3, R4, PC-B)
+name: two-sites
+
+topology:
+  nodes:
+    # ---- Site A (AS 65001) ----
+    r1:
+      kind: linux
+      image: quay.io/frrouting/frr:10.2.1
+      binds:
+        - frr/daemons:/etc/frr/daemons
+    r2:
+      kind: linux
+      image: quay.io/frrouting/frr:10.2.1
+      binds:
+        - frr/daemons:/etc/frr/daemons
+
+    # ---- Site B (AS 65002) ----
+    r3:
+      kind: linux
+      image: quay.io/frrouting/frr:10.2.1
+      binds:
+        - frr/daemons:/etc/frr/daemons
+    r4:
+      kind: linux
+      image: quay.io/frrouting/frr:10.2.1
+      binds:
+        - frr/daemons:/etc/frr/daemons
+
+    # ---- PCs ----
+    pc-a:
+      kind: linux
+      image: alpine:latest
+      exec:
+        - ip addr add 192.168.1.10/24 dev eth1
+        - ip route replace default via 192.168.1.1 dev eth1
+    pc-b:
+      kind: linux
+      image: alpine:latest
+      exec:
+        - ip addr add 192.168.2.10/24 dev eth1
+        - ip route replace default via 192.168.2.1 dev eth1
+
+  links:
+    - endpoints: ["r1:eth1", "r2:eth1"]     # Site A OSPF link
+    - endpoints: ["r2:eth2", "pc-a:eth1"]   # LAN A
+    - endpoints: ["r1:eth2", "r3:eth2"]     # eBGP link between sites
+    - endpoints: ["r3:eth1", "r4:eth1"]     # Site B OSPF link
+    - endpoints: ["r4:eth2", "pc-b:eth1"]   # LAN B

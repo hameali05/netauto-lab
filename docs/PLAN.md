@@ -43,7 +43,7 @@
 ### Day A
 
 #### Phase 1 — Lab built and configured by hand
-- [ ] frr/daemons + two-sites.clab.yml + add clab-*/ to .gitignore
+- [x] frr/daemons + two-sites.clab.yml + add clab-*/ to .gitignore
 - [ ] [YOU] Deploy the lab with containerlab (sudo)
 - [ ] [YOU] IPs and loopbacks on R1–R4 (vtysh)
 - [ ] [YOU] OSPF area 0 in Site A (R1, R2) and Site B (R3, R4)
