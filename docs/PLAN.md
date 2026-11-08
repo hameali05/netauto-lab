@@ -68,15 +68,15 @@
 - [ ] generate.py -> configs/<router>/frr.conf
 - [ ] Compare generated configs with reference-configs/
 
-#### Phase 4 — Deploy and verify
-- [ ] deploy.py (Nornir) with --dry-run
-- [ ] verify.py (PASS/FAIL table: OSPF, BGP, routes, ping)
-- [ ] Test from zero: destroy lab, redeploy, deploy.py, verify.py
-
-#### Phase 5 — CI with Batfish
+#### Phase 4 — CI with Batfish
 - [ ] tests/test_batfish.py
 - [ ] .github/workflows/ci.yml
 - [ ] Demo: push a wrong ASN -> CI fails -> fix -> CI green
+
+#### Phase 5 — Deploy and verify
+- [ ] deploy.py (Nornir) with --dry-run
+- [ ] verify.py (PASS/FAIL table: OSPF, BGP, routes, ping)
+- [ ] Test from zero: destroy lab, redeploy, deploy.py, verify.py
 
 #### Phase 6 — Finish
 - [ ] README
@@ -90,3 +90,6 @@
 3. [YOU - Windows] `wsl --shutdown` (in PowerShell, frees RAM)
 
 ## Notes
+- 2026-11-08: Swapped Phase 4 and Phase 5. CI with Batfish is now Phase 4,
+  Deploy + verify is now Phase 5, to follow the pipeline order
+  (check configs before deploying them).
