@@ -44,12 +44,12 @@
 
 #### Phase 1 — Lab built and configured by hand
 - [x] frr/daemons + two-sites.clab.yml + add clab-*/ to .gitignore
-- [ ] [YOU] Deploy the lab with containerlab (sudo)
-- [ ] [YOU] IPs and loopbacks on R1–R4 (vtysh)
-- [ ] [YOU] OSPF area 0 in Site A (R1, R2) and Site B (R3, R4)
-- [ ] [YOU] eBGP R1–R3, site networks announced, routes shared with OSPF
-- [ ] [YOU] Verify: OSPF Full, BGP Established, PC-A pings PC-B
-- [ ] Save golden configs in reference-configs/
+- [x] [YOU] Deploy the lab with containerlab (sudo)
+- [x] [YOU] IPs and loopbacks on R1–R4 (vtysh)
+- [x] [YOU] OSPF area 0 in Site A (R1, R2) and Site B (R3, R4)
+- [x] [YOU] eBGP R1–R3, site networks announced, routes shared with OSPF
+- [x] [YOU] Verify: OSPF Full, BGP Established, PC-A pings PC-B
+- [x] Save golden configs in reference-configs/
 - [ ] git commit + push
 
 #### Phase 2 — NetBox as source of truth
@@ -93,3 +93,7 @@
 - 2026-11-08: Swapped Phase 4 and Phase 5. CI with Batfish is now Phase 4,
   Deploy + verify is now Phase 5, to follow the pipeline order
   (check configs before deploying them).
+- 2026-11-09: Added shared frr/vtysh.conf ("service integrated-vtysh-config"),
+  bound into R1–R4 like daemons. Without it, `write memory` saves 5 separate
+  files (zebra.conf, ospfd.conf...) instead of one frr.conf, which the golden
+  configs and the deploy method need.

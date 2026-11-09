@@ -9,11 +9,13 @@ topology:
       image: quay.io/frrouting/frr:10.2.1
       binds:
         - frr/daemons:/etc/frr/daemons
+        - frr/vtysh.conf:/etc/frr/vtysh.conf
     r2:
       kind: linux
       image: quay.io/frrouting/frr:10.2.1
       binds:
         - frr/daemons:/etc/frr/daemons
+        - frr/vtysh.conf:/etc/frr/vtysh.conf
 
     # ---- Site B (AS 65002) ----
     r3:
@@ -21,11 +23,13 @@ topology:
       image: quay.io/frrouting/frr:10.2.1
       binds:
         - frr/daemons:/etc/frr/daemons
+        - frr/vtysh.conf:/etc/frr/vtysh.conf
     r4:
       kind: linux
       image: quay.io/frrouting/frr:10.2.1
       binds:
         - frr/daemons:/etc/frr/daemons
+        - frr/vtysh.conf:/etc/frr/vtysh.conf
 
     # ---- PCs ----
     pc-a:
