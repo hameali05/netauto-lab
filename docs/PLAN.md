@@ -54,12 +54,12 @@
 - [x] Learning doc (docs/learning/phase1.md)
 
 #### Phase 2 — NetBox as source of truth
-- [ ] [YOU] Start NetBox (docker compose up -d in ~/netbox-docker)
-- [ ] [YOU] Create the API token in NetBox and put it in .env
-- [ ] netbox/seed.yml (all lab data)
-- [ ] netbox/populate.py: sites, roles, platform, devices, interfaces,
+- [x] [YOU] Start NetBox (docker compose up -d in ~/netbox-docker)
+- [x] [YOU] Create the API token in NetBox and put it in .env
+- [x] netbox/seed.yml (all lab data)
+- [x] netbox/populate.py: sites, roles, platform, devices, interfaces,
       IPs, ASNs, config contexts
-- [ ] Run populate.py twice — no duplicates
+- [x] Run populate.py twice — no duplicates
 - [ ] git commit + push
 - [ ] Learning doc (docs/learning/phase2.md)
 
@@ -106,3 +106,11 @@
 - 2026-11-09: Learning doc at the end of each phase in docs/learning/phaseN.md
   (private: docs/learning/ is in .gitignore). Recap, decisions, Mermaid
   diagrams, interview Q&A.
+- 2026-11-09: seed.yml — the local BGP ASN is NOT stored in the config
+  context: it comes from the site's ASN object (one source for each fact).
+  OSPF/BGP data is stored per device as "local config context data".
+- 2026-11-09: PC-A and PC-B are in NetBox too (role "pc", with their IPs),
+  so NetBox holds the full lab and verify.py can find ping targets there.
+  eth0 (management) is not modelled.
+- 2026-11-09: Possible bonus at the end: add cables (links) in NetBox
+  (with "other" interface types) to get a topology view. Not done for now.

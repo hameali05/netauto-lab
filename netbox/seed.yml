@@ -1,0 +1,139 @@
+# netbox/seed.yml — all lab data. populate.py reads this file and
+# creates (or updates) the objects in NetBox. No secrets in this file.
+
+# ---------------------------------------------------------------
+# 1. Building blocks: things devices need before they can exist
+# ---------------------------------------------------------------
+rir:                          # who "owns" the ASNs. Private ASNs -> private RIR
+  name: Private
+  slug: private
+  is_private: true
+
+manufacturers:
+  - {name: FRRouting, slug: frrouting}
+  - {name: Alpine Linux, slug: alpine-linux}
+
+device_types:
+  - {model: FRR Router, slug: frr-router, manufacturer: frrouting}
+  - {model: Alpine PC, slug: alpine-pc, manufacturer: alpine-linux}
+
+roles:
+  - {name: Router, slug: router, color: "2196f3"}
+  - {name: PC, slug: pc, color: "4caf50"}
+
+platforms:
+  - {name: FRR 10.2.1, slug: frr, manufacturer: frrouting}
+
+# ---------------------------------------------------------------
+# 2. Sites and their ASN (one ASN per site)
+# ---------------------------------------------------------------
+sites:
+  - {name: Site A, slug: site-a, asn: 65001}
+  - {name: Site B, slug: site-b, asn: 65002}
+
+# ---------------------------------------------------------------
+# 3. Devices, interfaces, IPs, and routing data (config context)
+#    - interface "type": lo = virtual, ethX = other (container veth)
+#    - eth0 (management) is NOT listed: never used for routing
+#    - config_context = OSPF/BGP data, stored on the device in
+#      NetBox as "local config context data" (JSON)
+#    - The local BGP ASN is NOT repeated here: it comes from the
+#      device's site ASN (one source for each fact)
+# ---------------------------------------------------------------
+devices:
+  # ======================= Site A =======================
+  - name: r1
+    site: site-a
+    role: router
+    device_type: frr-router
+    platform: frr
+    interfaces:
+      - {name: lo,   type: virtual, ip: 1.1.1.1/32}
+      - {name: eth1, type: other,   ip: 10.1.12.1/30,  description: to r2 eth1}
+      - {name: eth2, type: other,   ip: 172.16.0.1/30, description: to r3 eth2 (eBGP)}
+    config_context:
+      ospf:
+        router_id: 1.1.1.1
+        redistribute: [bgp]
+        interfaces:            # interface-style OSPF: "ip ospf area X"
+          lo:   {area: 0}
+          eth1: {area: 0}
+                               # eth2 = eBGP link, no OSPF on purpose
+      bgp:
+        router_id: 1.1.1.1
+        ebgp_requires_policy: false
+        neighbors:
+          - {ip: 172.16.0.2, remote_as: 65002}
+        networks: [1.1.1.1/32, 2.2.2.2/32, 192.168.1.0/24]
+
+  - name: r2
+    site: site-a
+    role: router
+    device_type: frr-router
+    platform: frr
+    interfaces:
+      - {name: lo,   type: virtual, ip: 2.2.2.2/32}
+      - {name: eth1, type: other,   ip: 10.1.12.2/30,   description: to r1 eth1}
+      - {name: eth2, type: other,   ip: 192.168.1.1/24, description: LAN A (pc-a)}
+    config_context:
+      ospf:
+        router_id: 2.2.2.2
+        interfaces:
+          lo:   {area: 0}
+          eth1: {area: 0}
+          eth2: {area: 0, passive: true}   # LAN: announce it, no hellos to PCs
+
+  - name: pc-a
+    site: site-a
+    role: pc
+    device_type: alpine-pc
+    interfaces:
+      - {name: eth1, type: other, ip: 192.168.1.10/24, description: to r2 eth2}
+
+  # ======================= Site B =======================
+  - name: r3
+    site: site-b
+    role: router
+    device_type: frr-router
+    platform: frr
+    interfaces:
+      - {name: lo,   type: virtual, ip: 3.3.3.3/32}
+      - {name: eth1, type: other,   ip: 10.2.34.1/30,  description: to r4 eth1}
+      - {name: eth2, type: other,   ip: 172.16.0.2/30, description: to r1 eth2 (eBGP)}
+    config_context:
+      ospf:
+        router_id: 3.3.3.3
+        redistribute: [bgp]
+        interfaces:
+          lo:   {area: 0}
+          eth1: {area: 0}
+      bgp:
+        router_id: 3.3.3.3
+        ebgp_requires_policy: false
+        neighbors:
+          - {ip: 172.16.0.1, remote_as: 65001}
+        networks: [3.3.3.3/32, 4.4.4.4/32, 192.168.2.0/24]
+
+  - name: r4
+    site: site-b
+    role: router
+    device_type: frr-router
+    platform: frr
+    interfaces:
+      - {name: lo,   type: virtual, ip: 4.4.4.4/32}
+      - {name: eth1, type: other,   ip: 10.2.34.2/30,   description: to r3 eth1}
+      - {name: eth2, type: other,   ip: 192.168.2.1/24, description: LAN B (pc-b)}
+    config_context:
+      ospf:
+        router_id: 4.4.4.4
+        interfaces:
+          lo:   {area: 0}
+          eth1: {area: 0}
+          eth2: {area: 0, passive: true}
+
+  - name: pc-b
+    site: site-b
+    role: pc
+    device_type: alpine-pc
+    interfaces:
+      - {name: eth1, type: other, ip: 192.168.2.10/24, description: to r4 eth2}
