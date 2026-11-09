@@ -50,7 +50,7 @@
 - [x] [YOU] eBGP R1–R3, site networks announced, routes shared with OSPF
 - [x] [YOU] Verify: OSPF Full, BGP Established, PC-A pings PC-B
 - [x] Save golden configs in reference-configs/
-- [ ] git commit + push
+- [x] git commit + push
 
 #### Phase 2 — NetBox as source of truth
 - [ ] [YOU] Start NetBox (docker compose up -d in ~/netbox-docker)
