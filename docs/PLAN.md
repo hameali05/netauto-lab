@@ -60,7 +60,7 @@
 - [x] netbox/populate.py: sites, roles, platform, devices, interfaces,
       IPs, ASNs, config contexts
 - [x] Run populate.py twice — no duplicates
-- [ ] git commit + push
+- [x] git commit + push
 - [ ] Learning doc (docs/learning/phase2.md)
 
 ### Day B
