@@ -51,6 +51,7 @@
 - [x] [YOU] Verify: OSPF Full, BGP Established, PC-A pings PC-B
 - [x] Save golden configs in reference-configs/
 - [x] git commit + push
+- [x] Learning doc (docs/learning/phase1.md)
 
 #### Phase 2 — NetBox as source of truth
 - [ ] [YOU] Start NetBox (docker compose up -d in ~/netbox-docker)
@@ -60,6 +61,7 @@
       IPs, ASNs, config contexts
 - [ ] Run populate.py twice — no duplicates
 - [ ] git commit + push
+- [ ] Learning doc (docs/learning/phase2.md)
 
 ### Day B
 
@@ -67,22 +69,26 @@
 - [ ] templates/frr.j2
 - [ ] generate.py -> configs/<router>/frr.conf
 - [ ] Compare generated configs with reference-configs/
+- [ ] Learning doc (docs/learning/phase3.md)
 
 #### Phase 4 — CI with Batfish
 - [ ] tests/test_batfish.py
 - [ ] .github/workflows/ci.yml
 - [ ] Demo: push a wrong ASN -> CI fails -> fix -> CI green
+- [ ] Learning doc (docs/learning/phase4.md)
 
 #### Phase 5 — Deploy and verify
 - [ ] deploy.py (Nornir) with --dry-run
 - [ ] verify.py (PASS/FAIL table: OSPF, BGP, routes, ping)
 - [ ] Test from zero: destroy lab, redeploy, deploy.py, verify.py
+- [ ] Learning doc (docs/learning/phase5.md)
 
 #### Phase 6 — Finish
 - [ ] README
 - [ ] [YOU] Topology screenshot
 - [ ] Check no secrets in Git
 - [ ] CV line
+- [ ] Learning doc (docs/learning/phase6.md)
 
 ## End of each session
 1. git commit + push
@@ -97,3 +103,6 @@
   bound into R1–R4 like daemons. Without it, `write memory` saves 5 separate
   files (zebra.conf, ospfd.conf...) instead of one frr.conf, which the golden
   configs and the deploy method need.
+- 2026-11-09: Learning doc at the end of each phase in docs/learning/phaseN.md
+  (private: docs/learning/ is in .gitignore). Recap, decisions, Mermaid
+  diagrams, interview Q&A.
