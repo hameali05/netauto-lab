@@ -1,0 +1,59 @@
+{#- templates/frr.j2 — FRR config for one router.
+    generate.py renders it with: trim_blocks=True, lstrip_blocks=True,
+    keep_trailing_newline=True.
+    Variables:
+      hostname    "r1"
+      interfaces  [{name: "eth1", ip: "10.1.12.1/30"}, ...]  (sorted by name)
+      asn         local BGP ASN, from the device's site in NetBox
+      ospf, bgp   from the device's config context (bgp can be missing)
+-#}
+frr version 10.2.1_git
+frr defaults traditional
+hostname {{ hostname }}
+domainname localdomain
+no ipv6 forwarding
+service integrated-vtysh-config
+!
+{# ---------- Interfaces: IP + interface-style OSPF ---------- #}
+{% for intf in interfaces %}
+{% set ospf_intf = ospf.interfaces.get(intf.name) if ospf else none %}
+interface {{ intf.name }}
+ ip address {{ intf.ip }}
+{% if ospf_intf %}
+ ip ospf area {{ ospf_intf.area }}
+{% if ospf_intf.passive | default(false) %}
+ ip ospf passive
+{% endif %}
+{% endif %}
+exit
+!
+{% endfor %}
+{# ---------- BGP: only on routers that have BGP data (r1, r3) ---------- #}
+{% if bgp %}
+router bgp {{ asn }}
+ bgp router-id {{ bgp.router_id }}
+{% if bgp.ebgp_requires_policy is false %}
+ no bgp ebgp-requires-policy
+{% endif %}
+{% for nbr in bgp.neighbors %}
+ neighbor {{ nbr.ip }} remote-as {{ nbr.remote_as }}
+{% endfor %}
+ !
+ address-family ipv4 unicast
+{% for net in bgp.networks %}
+  network {{ net }}
+{% endfor %}
+ exit-address-family
+exit
+!
+{% endif %}
+{# ---------- OSPF process ---------- #}
+{% if ospf %}
+router ospf
+ ospf router-id {{ ospf.router_id }}
+{% for proto in ospf.redistribute | default([]) %}
+ redistribute {{ proto }}
+{% endfor %}
+exit
+!
+{% endif %}

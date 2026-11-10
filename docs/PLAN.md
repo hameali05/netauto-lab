@@ -61,14 +61,14 @@
       IPs, ASNs, config contexts
 - [x] Run populate.py twice — no duplicates
 - [x] git commit + push
-- [ ] Learning doc (docs/learning/phase2.md)
+- [x] Learning doc (docs/learning/phase2.md)
 
 ### Day B
 
 #### Phase 3 — Templates and generation
-- [ ] templates/frr.j2
-- [ ] generate.py -> configs/<router>/frr.conf
-- [ ] Compare generated configs with reference-configs/
+- [x] templates/frr.j2
+- [x] generate.py -> configs/<router>/frr.conf
+- [x] Compare generated configs with reference-configs/
 - [ ] Learning doc (docs/learning/phase3.md)
 
 #### Phase 4 — CI with Batfish
