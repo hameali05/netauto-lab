@@ -69,7 +69,7 @@
 - [x] templates/frr.j2
 - [x] generate.py -> configs/<router>/frr.conf
 - [x] Compare generated configs with reference-configs/
-- [ ] Learning doc (docs/learning/phase3.md)
+- [x] Learning doc (docs/learning/phase3.md)
 
 #### Phase 4 — CI with Batfish
 - [ ] tests/test_batfish.py
