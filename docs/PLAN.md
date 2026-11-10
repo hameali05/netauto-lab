@@ -72,7 +72,7 @@
 - [x] Learning doc (docs/learning/phase3.md)
 
 #### Phase 4 — CI with Batfish
-- [ ] tests/test_batfish.py
+- [x] tests/test_batfish.py
 - [ ] .github/workflows/ci.yml
 - [ ] Demo: push a wrong ASN -> CI fails -> fix -> CI green
 - [ ] Learning doc (docs/learning/phase4.md)
@@ -112,5 +112,15 @@
 - 2026-11-09: PC-A and PC-B are in NetBox too (role "pc", with their IPs),
   so NetBox holds the full lab and verify.py can find ping targets there.
   eth0 (management) is not modelled.
+- 2026-11-11: Batfish has no plain-FRR format. tests/test_batfish.py wraps
+  each configs/<router>/frr.conf in the Cumulus "concatenated" format
+  (hostname + small interfaces section + empty ports.conf + frr.conf) in a
+  temporary snapshot. configs/ is unchanged (still = golden configs, still
+  what deploy.py sends).
+- 2026-11-11: Batfish does not understand 4 normal FRR lines: exit,
+  domainname, no bgp ebgp-requires-policy, ip ospf passive. The parse test
+  accepts exactly these (KNOWN_UNSUPPORTED) and fails on any other.
+  Known gaps: Batfish can't check OSPF passive or ebgp-requires-policy.
+  verify.py (Phase 5) checks them on the real routers.
 - 2026-11-09: Possible bonus at the end: add cables (links) in NetBox
   (with "other" interface types) to get a topology view. Not done for now.

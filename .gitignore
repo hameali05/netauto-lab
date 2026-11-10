@@ -4,3 +4,4 @@ __pycache__/
 clab-*/
 CLAUDE.md
 docs/learning/
+.pytest_cache/
