@@ -75,7 +75,7 @@
 - [x] tests/test_batfish.py
 - [x] .github/workflows/ci.yml
 - [x] Demo: push a wrong ASN -> CI fails -> fix -> CI green
-- [ ] Learning doc (docs/learning/phase4.md)
+- [x] Learning doc (docs/learning/phase4.md)
 
 #### Phase 5 — Deploy and verify
 - [ ] deploy.py (Nornir) with --dry-run
@@ -122,5 +122,11 @@
   accepts exactly these (KNOWN_UNSUPPORTED) and fails on any other.
   Known gaps: Batfish can't check OSPF passive or ebgp-requires-policy.
   verify.py (Phase 5) checks them on the real routers.
+- 2026-11-11: Everything in CI is pinned: requirements.txt (exact versions),
+  Batfish image 2026.08.27.3685 (= laptop), runner ubuntu-24.04,
+  actions/checkout@v7 + setup-python@v7. Upgrade on purpose only.
+- 2026-11-11: CI demo done on branch demo-wrong-asn (kept, PR closed
+  without merging): remote-as 65003 in seed.yml -> 4 failed / 2 passed ->
+  fixed in the same PR -> green.
 - 2026-11-09: Possible bonus at the end: add cables (links) in NetBox
   (with "other" interface types) to get a topology view. Not done for now.
