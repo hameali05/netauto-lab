@@ -78,9 +78,13 @@
 - [x] Learning doc (docs/learning/phase4.md)
 
 #### Phase 5 — Deploy and verify
-- [ ] deploy.py (Nornir) with --dry-run
-- [ ] verify.py (PASS/FAIL table: OSPF, BGP, routes, ping)
-- [ ] Test from zero: destroy lab, redeploy, deploy.py, verify.py
+- [x] deploy.py (Nornir) with --dry-run
+- [x] verify.py (PASS/FAIL table: OSPF, BGP, routes, ping)
+- [ ] Negative test: break R3 eth2 by hand -> verify.py FAIL ->
+      deploy.py repairs -> verify.py all PASS   <- NEXT
+- [ ] Full pipeline test: a new change in NetBox -> generate.py ->
+      git push -> CI green -> deploy.py -> verify.py
+- [ ] Test from zero: destroy lab, redeploy, deploy.py, verify.py --wait 60
 - [ ] Learning doc (docs/learning/phase5.md)
 
 #### Phase 6 — Finish
@@ -128,5 +132,25 @@
 - 2026-11-11: CI demo done on branch demo-wrong-asn (kept, PR closed
   without merging): remote-as 65003 in seed.yml -> 4 failed / 2 passed ->
   fixed in the same PR -> green.
+- 2026-11-11: deploy.py has a CI gate: before deploying, it asks the GitHub
+  public API (no token, no gh) if the "Batfish checks" run for the current
+  commit on main is green. It also refuses if configs/ has uncommitted
+  changes. --skip-ci-check bypasses it (with a warning). --dry-run is
+  never blocked. Deploy is still started by hand.
+- 2026-11-11: Nornir inventory comes from NetBox (nornir_netbox, devices
+  with role "router"). Container name = clab-two-sites-<device name>.
+  Config applied with frr-reload.py (only the differences, no restart),
+  then checked again with --test (must show no difference).
+- 2026-11-11: After a PC restart (or wsl --shutdown), Docker restarts the
+  lab containers but containerlab does NOT recreate the links: routers
+  have only lo + eth0 ("pseudo interface" in vtysh). Fix at the start of
+  each session: [YOU] sudo containerlab destroy + deploy, then
+  deploy.py and verify.py --wait 60.
+- 2026-11-11: verify.py takes the EXPECTED state from NetBox (pynetbox)
+  and the REAL state from `show ... json` (Nornir, same inventory as
+  deploy.py) + pings between PCs. Covers the Batfish gaps: OSPF passive,
+  and ebgp-requires-policy (checked by its effect: prefixes received).
+  Done so far: dry run, from-zero deploy, drift test, first verify.py
+  run (20/20 PASS). Journal in docs/learning/phase5.md.
 - 2026-11-09: Possible bonus at the end: add cables (links) in NetBox
   (with "other" interface types) to get a topology view. Not done for now.

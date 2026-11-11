@@ -9,3 +9,8 @@ PyYAML==6.0.3
 # Phase 4: Batfish tests
 pybatfish==2026.9.17.3748
 pytest==9.2.0
+
+# Phase 5: deploy (Nornir + NetBox inventory) and CI gate (GitHub API)
+nornir==3.6.1
+nornir_netbox==0.3.0
+requests==2.34.2
