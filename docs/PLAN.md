@@ -74,7 +74,7 @@
 #### Phase 4 — CI with Batfish
 - [x] tests/test_batfish.py
 - [x] .github/workflows/ci.yml
-- [ ] Demo: push a wrong ASN -> CI fails -> fix -> CI green
+- [x] Demo: push a wrong ASN -> CI fails -> fix -> CI green
 - [ ] Learning doc (docs/learning/phase4.md)
 
 #### Phase 5 — Deploy and verify
