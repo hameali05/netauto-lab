@@ -1,0 +1,48 @@
+# CI: check the generated configs with Batfish on every push / pull request.
+# It only CHECKS. Deploy is done by hand on the laptop (deploy.py).
+name: Batfish checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  batfish:
+    runs-on: ubuntu-latest
+
+    # Batfish runs as a second container next to the test machine
+    services:
+      batfish:
+        image: batfish/batfish:2026.08.27.3685   # same version as the laptop
+        ports:
+          - 9996:9996
+
+    steps:
+      - name: Get the code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install Python packages
+        run: pip install -r requirements.txt
+
+      - name: Wait for Batfish to be ready (max 2 minutes)
+        run: |
+          for i in $(seq 1 60); do
+            python -c "from pybatfish.client.session import Session; Session(host='localhost').get_component_versions()" \
+              && exit 0
+            echo "Batfish not ready yet ($i/60)..."
+            sleep 2
+          done
+          echo "Batfish did not start"; exit 1
+
+      - name: Run Batfish tests
+        run: pytest -v tests/
+        env:
+          BATFISH_HOST: localhost

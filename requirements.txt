@@ -1,0 +1,11 @@
+# Python packages for netauto-lab (exact versions = same as the laptop)
+# Install: .venv/bin/pip install -r requirements.txt
+
+# Phase 2-3: NetBox API, templates, YAML seed file
+pynetbox==7.9.0
+Jinja2==3.1.6
+PyYAML==6.0.3
+
+# Phase 4: Batfish tests
+pybatfish==2026.9.17.3748
+pytest==9.2.0
