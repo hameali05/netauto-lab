@@ -80,10 +80,10 @@
 #### Phase 5 — Deploy and verify
 - [x] deploy.py (Nornir) with --dry-run
 - [x] verify.py (PASS/FAIL table: OSPF, BGP, routes, ping)
-- [ ] Negative test: break R3 eth2 by hand -> verify.py FAIL ->
-      deploy.py repairs -> verify.py all PASS   <- NEXT
+- [x] Negative test: break R3 eth2 by hand -> verify.py FAIL ->
+      deploy.py repairs -> verify.py all PASS
 - [ ] Full pipeline test: a new change in NetBox -> generate.py ->
-      git push -> CI green -> deploy.py -> verify.py
+      git push -> CI green -> deploy.py -> verify.py   <- NEXT
 - [ ] Test from zero: destroy lab, redeploy, deploy.py, verify.py --wait 60
 - [ ] Learning doc (docs/learning/phase5.md)
 
