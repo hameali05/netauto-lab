@@ -64,7 +64,7 @@ devices:
         ebgp_requires_policy: false
         neighbors:
           - {ip: 172.16.0.2, remote_as: 65002}
-        networks: [1.1.1.1/32, 2.2.2.2/32, 192.168.1.0/24]
+        networks: [1.1.1.1/32, 2.2.2.2/32, 192.168.1.0/24, 10.1.12.0/30]
 
   - name: r2
     site: site-a
@@ -112,7 +112,7 @@ devices:
         ebgp_requires_policy: false
         neighbors:
           - {ip: 172.16.0.1, remote_as: 65001}
-        networks: [3.3.3.3/32, 4.4.4.4/32, 192.168.2.0/24]
+        networks: [3.3.3.3/32, 4.4.4.4/32, 192.168.2.0/24, 10.2.34.0/30]
 
   - name: r4
     site: site-b
