@@ -82,13 +82,13 @@
 - [x] verify.py (PASS/FAIL table: OSPF, BGP, routes, ping)
 - [x] Negative test: break R3 eth2 by hand -> verify.py FAIL ->
       deploy.py repairs -> verify.py all PASS
-- [ ] Full pipeline test: a new change in NetBox -> generate.py ->
-      git push -> CI green -> deploy.py -> verify.py   <- NEXT
-- [ ] Test from zero: destroy lab, redeploy, deploy.py, verify.py --wait 60
-- [ ] Learning doc (docs/learning/phase5.md)
+- [x] Full pipeline test: a new change in NetBox -> generate.py ->
+      git push -> CI green -> deploy.py -> verify.py
+- [x] Test from zero: destroy lab, redeploy, deploy.py, verify.py --wait 60
+- [x] Learning doc (docs/learning/phase5.md)
 
 #### Phase 6 — Finish
-- [ ] README
+- [ ] README   <- NEXT
 - [ ] [YOU] Topology screenshot
 - [ ] Check no secrets in Git
 - [ ] CV line
@@ -152,5 +152,18 @@
   and ebgp-requires-policy (checked by its effect: prefixes received).
   Done so far: dry run, from-zero deploy, drift test, first verify.py
   run (20/20 PASS). Journal in docs/learning/phase5.md.
+- 2026-11-14: Full pipeline test done (commit 8c2d32c): R1 announces
+  10.1.12.0/30 and R3 announces 10.2.34.0/30 in BGP (seed.yml -> NetBox
+  -> generate.py -> CI green -> deploy.py +1 line on r1/r3 -> verify.py
+  20/20, "4 received"). Side effect: fixes the Phase 1 "no route back"
+  problem (R2 can ping 4.4.4.4 without -I; before, R4 replied via eth0).
+- 2026-11-14: "Test from zero" not repeated as a separate test: done on
+  2026-11-11 (journal Test 2) and in each restart routine (again today:
+  20/20 PASS).
+- 2026-11-14: Don't poll the GitHub API: 60 calls/hour without a token.
+  Check the CI tick on GitHub; deploy.py's CI gate uses only 1 call.
+- 2026-11-14: reference-configs/ (Phase 1 golden configs) now differ from
+  configs/ for r1 and r3 (the 2 new network lines). Open decision: keep
+  as Phase 1 snapshot or update.
 - 2026-11-09: Possible bonus at the end: add cables (links) in NetBox
   (with "other" interface types) to get a topology view. Not done for now.
