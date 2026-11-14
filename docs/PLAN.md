@@ -163,7 +163,8 @@
 - 2026-11-14: Don't poll the GitHub API: 60 calls/hour without a token.
   Check the CI tick on GitHub; deploy.py's CI gate uses only 1 call.
 - 2026-11-14: reference-configs/ (Phase 1 golden configs) now differ from
-  configs/ for r1 and r3 (the 2 new network lines). Open decision: keep
-  as Phase 1 snapshot or update.
+  configs/ for r1 and r3 (the 2 new network lines). Decision: keep them
+  frozen as the Phase 1 baseline, never update them. Explained in
+  reference-configs/README.md. Current configs = configs/.
 - 2026-11-09: Possible bonus at the end: add cables (links) in NetBox
   (with "other" interface types) to get a topology view. Not done for now.
