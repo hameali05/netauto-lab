@@ -120,7 +120,8 @@ Current result: **20/20 PASS**.
 
 ### Tests done
 
-- **Drift / negative test:** I broke R3 eth2 by hand → `verify.py` FAIL → `deploy.py` repaired it → `verify.py` all PASS.
+- **Drift test (R2):** I changed R2 by hand, outside Git: I added an extra `description` and removed `ip ospf passive` from the LAN interface. `deploy.py --dry-run` detected both differences, and `deploy.py` put R2 back to the approved config.
+- **Negative test (R3):** I broke R3 eth2 by hand → `verify.py` FAIL → `deploy.py` repaired it → `verify.py` all PASS.
 - **Full pipeline test:** I made a new change in NetBox (R1 and R3 announce their site transit link in BGP) → generate → push → CI green → deploy (+1 line on r1/r3) → verify 20/20.
 - **From zero:** destroy the lab, redeploy it, then `deploy.py` and `verify.py --wait 60` → all PASS.
 
@@ -150,9 +151,13 @@ Current result: **20/20 PASS**.
 
 ## How to run it
 
-**Prerequisites:** Linux (or WSL2), Docker, Containerlab, Python 3.12, a running [NetBox](https://github.com/netbox-community/netbox-docker) instance with an API token.
+**Prerequisites:** Linux (or WSL2), Docker, Containerlab, Python 3.12, and a running NetBox instance with an API token (I use [netbox-docker](https://github.com/netbox-community/netbox-docker)).
 
 ```bash
+# 0. Get the code
+git clone https://github.com/hameali05/netauto-lab.git
+cd netauto-lab
+
 # 1. Python environment
 python3 -m venv .venv
 .venv/bin/pip install -r requirements.txt
@@ -211,3 +216,14 @@ docker run -d --name batfish -p 9996:9996 batfish/batfish:2026.08.27.3685
 - **Test before deploy:** Batfish catches a wrong AS number from the config text alone, before any router is touched.
 - **Verify after deploy:** a config can be "valid" and still not work. Checking the live state (OSPF, BGP, routes, ping) closes that gap.
 - **Small, safe changes:** dry-run, apply only the differences, and check again after applying.
+
+---
+
+## Author
+
+**Ali Hame**, network engineering student (CCNA in progress).
+I'm looking for an internship in networking / network automation.
+
+[LinkedIn](https://www.linkedin.com/in/ali-hame)
+
+*Built with [Claude Code](https://claude.com/claude-code) as a pair programmer: I made the design decisions, ran every test on my lab, and learned each step along the way.*
