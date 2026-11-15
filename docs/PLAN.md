@@ -88,9 +88,9 @@
 - [x] Learning doc (docs/learning/phase5.md)
 
 #### Phase 6 — Finish
-- [ ] README   <- NEXT
-- [ ] [YOU] Topology screenshot
-- [ ] Check no secrets in Git
+- [x] README
+- [x] [YOU] Topology screenshot
+- [ ] Check no secrets in Git   <- NEXT
 - [ ] CV line
 - [ ] Learning doc (docs/learning/phase6.md)
 
