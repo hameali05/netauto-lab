@@ -90,8 +90,8 @@
 #### Phase 6 — Finish
 - [x] README
 - [x] [YOU] Topology screenshot
-- [ ] Check no secrets in Git   <- NEXT
-- [ ] CV line
+- [x] Check no secrets in Git
+- [ ] CV line   <- NEXT
 - [ ] Learning doc (docs/learning/phase6.md)
 
 ## End of each session
@@ -166,5 +166,9 @@
   configs/ for r1 and r3 (the 2 new network lines). Decision: keep them
   frozen as the Phase 1 baseline, never update them. Explained in
   reference-configs/README.md. Current configs = configs/.
+- 2026-11-15: Secrets check done on the full history (35 commits, all
+  branches, local + GitHub): clean. .env never committed, real token found
+  0 times, CLAUDE.md and docs/learning/ never pushed. Local branch
+  backup-before-rewrite (old commits with CLAUDE.md, no secrets) deleted.
 - 2026-11-09: Possible bonus at the end: add cables (links) in NetBox
   (with "other" interface types) to get a topology view. Not done for now.
